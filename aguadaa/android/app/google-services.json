@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "181033990264",
+    "project_id": "aguada-32232",
+    "storage_bucket": "aguada-32232.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181033990264:android:774dbd56a7f2e4def3558d",
+        "android_client_info": {
+          "package_name": "com.example.aguadaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181033990264-me0hq9jnoom95f24lf0v1ml6m27ksrgc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9nk4-4ZLgCiyHCsd3ZfsfUbESHnYgZto"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181033990264-me0hq9jnoom95f24lf0v1ml6m27ksrgc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

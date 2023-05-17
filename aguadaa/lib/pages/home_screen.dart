@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'Admin/dashboard_admin.dart';
 import 'employees/dashboard.dart';
 import 'order/database.dart';
 import 'order/order_model.dart';
@@ -175,7 +176,28 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text('Employee'),
           ),
+          SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DashboardAdmin()),
+              );
+            },
+            child: const Text('Admin'),
+          ),
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ElevatedButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            // Navigate to the login page or any other page you want to show after logout
+          },
+          child: Text('Logout'),
+        ),
       ),
     );
   }

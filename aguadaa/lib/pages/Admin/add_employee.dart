@@ -6,22 +6,20 @@ import 'package:aguadaa/services/auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'Admin/dashboard_admin.dart';
-
-class LoginPage extends StatefulWidget {
+class RegisterPageEmployee extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPageEmployee({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPageEmployee> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPageEmployee> {
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  void signUserIn() async {
+  void signUserUp() async {
     showDialog(
       context: context,
       builder: (context) {
@@ -31,39 +29,39 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
 
-    //   try {
-    //     await FirebaseAuth.instance.signInWithEmailAndPassword(
-    //         email: emailController.text, password: passwordController.text);
-    //     Navigator.pop(context);
-    //   } on FirebaseAuthException catch (e) {
-    //     Navigator.pop(context);
-    //     showErrorMessage(e.code);
-    //   }
-    // }
-
     try {
-      String email = 'jcmrupinta@gmail.com';
-      String password = 'aguada123';
-
-      if (emailController.text == email &&
-          passwordController.text == password) {
-        Navigator.pop(context); // Close the loading dialog
-
-        // Redirect to the DashboardAdmin page
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardAdmin()),
-        );
-      } else {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
 
-        Navigator.pop(context);
+        Navigator.pop(context); // Close the progress dialog
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: Colors.blue,
+              title: Center(
+                child: Text(
+                  'Employee Successfully added',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            );
+          },
+        ).then((value) {
+          // Clear the text fields after the dialog is closed
+          emailController.clear();
+          passwordController.clear();
+          confirmPasswordController.clear();
+        });
+      } else {
+        showErrorMessage("Passwords don't match");
+        Navigator.pop(context); // Close the progress dialog
       }
     } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
+      Navigator.pop(context); // Close the progress dialog
       showErrorMessage(e.code);
     }
   }
@@ -109,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //Welcome text
                     Text(
-                      'Welcome Back!',
+                      'Create account for Employee!',
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 16,
@@ -136,26 +134,20 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 10),
 
-                    //Change password
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Forgot Password?',
-                            style: TextStyle(color: Colors.grey[600]),
-                          ),
-                        ],
-                      ),
+                    //confirm password
+                    MyTextField(
+                      controller: confirmPasswordController,
+                      hintText: 'Confirm Password',
+                      obscureText: true,
                     ),
 
                     const SizedBox(height: 25),
 
-                    //Login button
-                    MyButton(
-                      text: "Sign In",
-                      onTap: signUserIn,
+                    Container(
+                      child: MyButton(
+                        text: "Add Account",
+                        onTap: signUserUp,
+                      ),
                     ),
 
                     const SizedBox(height: 50),
@@ -171,14 +163,14 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.grey[400],
                             ),
                           ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text(
-                              'Or continue with',
-                              style: TextStyle(color: Colors.grey[700]),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding:
+                          //       const EdgeInsets.symmetric(horizontal: 10.0),
+                          //   child: Text(
+                          //     'Or continue with',
+                          //     style: TextStyle(color: Colors.grey[700]),
+                          //   ),
+                          // ),
                           Expanded(
                             child: Divider(
                               thickness: 0.5,
@@ -192,37 +184,37 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 25),
 
                     //Login with google
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SquareTile(
-                            onTap: () => AuthService().signInWithGoogle(),
-                            imagePath: 'lib/images/logo.png'),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     SquareTile(
+                    //         onTap: () => AuthService().signInWithGoogle(),
+                    //         imagePath: 'lib/images/logo.png'),
+                    //   ],
+                    // ),
 
-                    const SizedBox(height: 50),
+                    // const SizedBox(height: 50),
 
                     //Register
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Don\'t have an account?',
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        const SizedBox(width: 4),
-                        GestureDetector(
-                          onTap: widget.onTap,
-                          child: const Text(
-                            'Register now',
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     Text(
+                    //       'Already have an account?',
+                    //       style: TextStyle(color: Colors.grey[700]),
+                    //     ),
+                    //     const SizedBox(width: 4),
+                    //     GestureDetector(
+                    //       onTap: widget.onTap,
+                    //       child: const Text(
+                    //         'Sign In now',
+                    //         style: TextStyle(
+                    //             color: Colors.blue,
+                    //             fontWeight: FontWeight.bold),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ]),
             ),
           ),
